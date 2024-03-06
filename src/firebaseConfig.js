@@ -1,6 +1,4 @@
-import firebase from 'firebase/compat/app'
-
-const firebaseConfig = {
+export default {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_PROJECT_ID,
@@ -8,8 +6,3 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_APP_ID
 }
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig)
-
-export default firebase

@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
+import firebase from 'firebase/compat/app'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
-import firebase from '../firebase'
 import { onMounted } from 'vue'
 
 // Initialize the FirebaseUI Widget using Firebase.
