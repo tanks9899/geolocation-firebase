@@ -8,14 +8,10 @@
 </template>
 
 <script setup>
-import firebase from 'firebase/compat/app'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
-import firebaseConfig from '../firebaseConfig'
+import firebase from '../firebase'
 import { onMounted } from 'vue'
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig)
 
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseui.auth.AuthUI(firebase.auth())
@@ -25,7 +21,7 @@ const uiConfig = {
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
       console.log(authResult)
       console.log(redirectUrl)
-      return true
+      return false
     },
     uiShown: function () {
       // The widget is rendered.
