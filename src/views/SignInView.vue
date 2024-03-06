@@ -19,9 +19,7 @@ var ui = new firebaseui.auth.AuthUI(firebase.auth())
 const uiConfig = {
   callbacks: {
     signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-      console.log(authResult)
-      console.log(redirectUrl)
-      return false
+      return true
     },
     uiShown: function () {
       // The widget is rendered.
@@ -30,7 +28,7 @@ const uiConfig = {
     }
   },
   signInFlow: 'popup',
-  signinSuccessUrl: 'http://localhost:5173/',
+  signinSuccessUrl: 'http://localhost:5173/home',
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
