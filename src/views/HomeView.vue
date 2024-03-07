@@ -1,22 +1,38 @@
 <template>
   <div class="container">
-    <button @click="getCurrentLocation" style="margin-top: 10vh">Get My Current Location</button>
+    <button @click="getCurrentLocation">Get My Current Location</button>
     <button>SignOut</button>
-    <h2>
-      {{ address }}
-    </h2>
-    <GMapMap :center="center" :zoom="7" map-type-id="terrain" style="width: 500px; height: 300px">
-      <GMapCluster>
-        <GMapMarker
-          :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
-          :clickable="true"
-          :draggable="true"
-          @click="center = m.position"
-        />
-      </GMapCluster>
-    </GMapMap>
+  </div>
+  <div class="sub-container">
+    <div class="map-container">
+      <GMapMap :center="center" :zoom="7" map-type-id="terrain" style="width: 500px; height: 300px">
+        <GMapCluster>
+          <GMapMarker
+            :key="index"
+            v-for="(m, index) in markers"
+            :position="m.position"
+            :clickable="true"
+            :draggable="true"
+            @click="center = m.position"
+          />
+        </GMapCluster>
+      </GMapMap>
+    </div>
+    <div class="location-info">
+      <h2>Location Information:</h2>
+      <ul>
+        <li><strong>Country:</strong> {{ location_data.country }}</li>
+        <li><strong>Country Area:</strong> {{ location_data.country_area }}</li>
+        <li><strong>Country Calling Code:</strong> {{ location_data.country_calling_code }}</li>
+        <li><strong>Country Capital:</strong> {{ location_data.country_capital }}</li>
+        <li><strong>Country Code:</strong> {{ location_data.country_code }}</li>
+        <li><strong>Country Code ISO3:</strong> {{ location_data.country_code_iso3 }}</li>
+        <li><strong>Country Population:</strong> {{ location_data.country_population }}</li>
+        <li><strong>Country TLD:</strong> {{ location_data.country_tld }}</li>
+        <li><strong>Currency Name:</strong> {{ location_data.currency_name }}</li>
+        <li><strong>Currency Symbol:</strong> {{ location_data.currency_symbol }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -24,7 +40,7 @@
 import axios from 'axios'
 import { ref } from 'vue'
 // free do mounted on signin and redicrect to home page if logged in
-const address = ref({})
+const location_data = ref({})
 const center = ref({ lat: 0, lng: 0 })
 const markers = ref([
   {
@@ -42,7 +58,7 @@ const getAddress = (lat, lng) => {
     )
     .then((res) => {
       const result = res.data.results[0]
-      address.value = {
+      location_data.value = {
         country: result.components.country,
         country_area: result.annotations.UN_M49.regions.ASIA,
         country_calling_code: result.annotations.callingcode,
@@ -82,12 +98,26 @@ const getCurrentLocation = () => {
 }
 </script>
 
-<style>
+<style scoped>
 .container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 60vh;
+  height: 20vh;
+}
+
+.sub-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+}
+
+.location-info {
+  margin-left: 20px;
+}
+
+.map-container {
+  margin-right: 20px;
 }
 </style>
