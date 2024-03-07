@@ -7,7 +7,7 @@
       <button @click="getCurrentLocation" style="margin-bottom: 25px">
         Get My Current Location
       </button>
-      <div class="map-location-container">
+      <div v-if="display" class="map-location-container">
         <div class="map-section">
           <GMapMap
             :center="center"
@@ -27,7 +27,7 @@
             </GMapCluster>
           </GMapMap>
         </div>
-        <div class="location-info">
+        <div v-if="display" class="location-info">
           <h2>Location Information:</h2>
           <ul>
             <li><strong>Country:</strong> {{ location_data.country }}</li>
@@ -52,6 +52,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 // free do mounted on signin and redicrect to home page if logged in
 const location_data = ref({})
+const display = ref(false)
 const center = ref({ lat: 0, lng: 0 })
 const markers = ref([
   {
@@ -81,6 +82,7 @@ const getAddress = (lat, lng) => {
         currency_name: result.annotations.currency.name,
         currency_symbol: result.annotations.currency.symbol
       }
+      display.value = true
     })
     .catch((err) => {
       alert(err)
