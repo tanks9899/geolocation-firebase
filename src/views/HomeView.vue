@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <button class="sign-out">Sign Out</button>
+      <button class="sign-out" @click="userSignOut">Sign Out</button>
     </div>
     <div class="content">
       <button @click="getCurrentLocation" style="margin-bottom: 25px">
@@ -47,7 +47,9 @@
 <script setup>
 import axios from 'axios'
 import { ref } from 'vue'
-// free do mounted on signin and redicrect to home page if logged in
+import { getAuth, signOut } from 'firebase/auth'
+import { useRouter } from 'vue-router'
+
 const location_data = ref({})
 const display = ref(false)
 const center = ref({ lat: 0, lng: 0 })
@@ -59,6 +61,7 @@ const markers = ref([
     }
   }
 ])
+const router = useRouter()
 
 const getAddress = (lat, lng) => {
   axios
@@ -93,7 +96,7 @@ const getCurrentLocation = () => {
         markers.value[0].position.lng = res.coords.longitude
         getAddress(res.coords.latitude, res.coords.longitude)
       },
-      (err) => {
+      () => {
         alert(
           'Change of mind?\nClick on View Site Information at the top right and Reset permission.'
         )
@@ -102,6 +105,16 @@ const getCurrentLocation = () => {
   } else {
     alert('Your browser does not support geolocation API!')
   }
+}
+
+const userSignOut = () => {
+  signOut(getAuth())
+    .then(() => {
+      router.push('/')
+    })
+    .catch((err) => {
+      alert(err)
+    })
 }
 </script>
 
