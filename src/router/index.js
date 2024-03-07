@@ -37,6 +37,7 @@ router.beforeEach(async (to, from, next) => {
     if (user) {
       next()
     } else {
+      alert('Please login first before accessing this page!')
       next({ path: '/' })
     }
   } else {
