@@ -12,13 +12,17 @@ import firebase from 'firebase/compat/app'
 import * as firebaseui from 'firebaseui'
 import 'firebaseui/dist/firebaseui.css'
 import { onMounted } from 'vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 // Initialize the FirebaseUI Widget using Firebase.
 var ui = new firebaseui.auth.AuthUI(firebase.auth())
 
 const uiConfig = {
   callbacks: {
-    signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+    signInSuccessWithAuthResult: function () {
       return true
     },
     uiShown: function () {
@@ -36,7 +40,18 @@ const uiConfig = {
   ]
 }
 
+const checkCurrentUser = () => {
+  onAuthStateChanged(getAuth(), (user) => {
+    if (user) {
+      router.push('/home')
+    } else {
+      console.log('Not logging in!')
+    }
+  })
+}
+
 onMounted(() => {
+  checkCurrentUser()
   ui.start('#firebaseui-auth-container', uiConfig)
 })
 </script>

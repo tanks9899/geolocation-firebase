@@ -46,8 +46,8 @@
 
 <script setup>
 import axios from 'axios'
-import { ref } from 'vue'
 import { getAuth, signOut } from 'firebase/auth'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const location_data = ref({})
