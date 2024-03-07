@@ -31,15 +31,12 @@
           <h2>Location Information:</h2>
           <ul>
             <li><strong>Country:</strong> {{ location_data.country }}</li>
-            <li><strong>Country Area:</strong> {{ location_data.country_area }}</li>
             <li><strong>Country Calling Code:</strong> {{ location_data.country_calling_code }}</li>
-            <li><strong>Country Capital:</strong> {{ location_data.country_capital }}</li>
             <li><strong>Country Code:</strong> {{ location_data.country_code }}</li>
             <li><strong>Country Code ISO3:</strong> {{ location_data.country_code_iso3 }}</li>
-            <li><strong>Country Population:</strong> {{ location_data.country_population }}</li>
-            <li><strong>Country TLD:</strong> {{ location_data.country_tld }}</li>
+            <li><strong>Country Name:</strong> {{ location_data.country_name }}</li>
+            <li><strong>Currency:</strong> {{ location_data.currency }}</li>
             <li><strong>Currency Name:</strong> {{ location_data.currency_name }}</li>
-            <li><strong>Currency Symbol:</strong> {{ location_data.currency_symbol }}</li>
           </ul>
         </div>
       </div>
@@ -71,16 +68,13 @@ const getAddress = (lat, lng) => {
     .then((res) => {
       const result = res.data.results[0]
       location_data.value = {
-        country: result.components.country,
-        country_area: result.annotations.UN_M49.regions.ASIA,
+        country: result.components.country_code.toUpperCase(),
         country_calling_code: result.annotations.callingcode,
-        country_capital: result.annotations.flag,
         country_code: result.components.country_code.toUpperCase(),
         country_code_iso3: result.components['ISO_3166-1_alpha-3'],
-        country_population: result.annotations.UN_M49.regions.MY,
-        country_tld: result.components.country_code.toUpperCase(),
-        currency_name: result.annotations.currency.name,
-        currency_symbol: result.annotations.currency.symbol
+        country_name: result.components.country,
+        currency: result.annotations.currency.iso_code,
+        currency_name: result.annotations.currency.name
       }
       display.value = true
     })
