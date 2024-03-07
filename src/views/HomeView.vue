@@ -1,11 +1,36 @@
 <template>
   <div class="container">
-    <button @click="getCurrentLocation">Get My Current Location</button>
+    <button @click="getCurrentLocation" style="margin-top: 10vh">Get My Current Location</button>
+    <h2>{{ address }}</h2>
+    <GMapMap :center="center" :zoom="7" map-type-id="terrain" style="width: 500px; height: 300px">
+      <GMapCluster>
+        <GMapMarker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="true"
+          :draggable="true"
+          @click="center = m.position"
+        />
+      </GMapCluster>
+    </GMapMap>
   </div>
 </template>
 
 <script setup>
 import axios from 'axios'
+import { ref } from 'vue'
+
+const address = ref('')
+const center = ref({ lat: 0, lng: 0 })
+const markers = ref([
+  {
+    position: {
+      lat: 0,
+      lng: 0
+    }
+  }
+])
 
 const getAddress = (lat, long) => {
   axios
@@ -16,8 +41,7 @@ const getAddress = (lat, long) => {
       if (res.data.error_message) {
         alert(res.data.error_message)
       } else {
-        console.log(res.data.results)
-        console.log(res.data.results[0].formatted_address)
+        address.value = res.data.results[0].formatted_address
       }
     })
     .catch((err) => {
@@ -29,6 +53,10 @@ const getCurrentLocation = () => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (res) => {
+        center.value.lat = res.coords.latitude
+        center.value.lng = res.coords.longitude
+        markers.value[0].position.lat = res.coords.latitude
+        markers.value[0].position.lng = res.coords.longitude
         getAddress(res.coords.latitude, res.coords.longitude)
       },
       (err) => {
@@ -42,3 +70,13 @@ const getCurrentLocation = () => {
   }
 }
 </script>
+
+<style>
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+</style>
